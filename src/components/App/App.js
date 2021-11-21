@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchContacts } from '../../Redux/contact-slice';
+import { fetchContacts } from '../../redux/contact-slice';
 import Container from '../Container/Container';
 import ContactForm from '../ContactForm/ContactForm';
 import Filter from '../Filter/Filter';

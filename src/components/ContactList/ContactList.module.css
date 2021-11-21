@@ -40,18 +40,19 @@
 .div {
   display: flex;
   justify-content: center;
+  margin-top: 50px;
+  text-align: center;
 
   margin-top: 50px;
 }
 
 .items {
   margin-bottom: 10px;
-}
-
-.number {
+  color: #f3f71c;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: small;
   margin-left: 5px;
-
-  color: blue;
   cursor: pointer;
 }
 
