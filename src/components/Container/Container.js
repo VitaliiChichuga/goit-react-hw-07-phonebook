@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
-import s from './Container.module.css';
+import styles from '../Container/Container.module.css';
 
 const Container = ({ children }) => (
-  <div className={s.container}>{children}</div>
+  <div className={styles.container}>{children}</div>
 );
 
 Container.defaultProps = {
   children: [],
 };
+
 Container.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.node,
 };
 
 export default Container;

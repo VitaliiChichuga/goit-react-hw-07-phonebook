@@ -1,5 +1,5 @@
 {
-  "name": "goit-react-hw-06-hooks-phonebook",
+  "name": "goit-react-hw-07-hooks-phonebook",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "husky": "^7.0.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-axios": "^2.0.5",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.6",

@@ -1,44 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { BsFillFileEarmarkExcelFill } from 'react-icons/bs';
-import s from './ContactList.module.css';
-import { deleteContact } from '../../redux/contacts/actions';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContactsList } from '../../redux/contacts/contacts-selectors';
-import { getFilter } from '../../redux/contacts/contacts-selectors';
+import { deleteContact } from '../../Redux/contact-slice';
+import { getvisibleContacts } from '../../Redux/contact-selectors';
+import style from '../ContactList/ContactList.module.css';
 
 const ContactList = () => {
+  const visibleContacts = useSelector(getvisibleContacts);
   const dispatch = useDispatch();
-
-  const getVisibleContact = (arrOfContacts, filter) => {
-    return arrOfContacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase()),
-    );
-  };
-
-  const visibleContacts = getVisibleContact(
-    useSelector(getContactsList),
-    useSelector(getFilter),
-  );
+  const onDeleteContact = id => dispatch(deleteContact(id));
   return (
-    <ul className={s.list}>
-      {visibleContacts.map(({ name, id, number }) => (
-        <li key={id} className={s.item}>
-          <p className={s.text}>{name}:</p>
-          <span>{number}</span>
-          <button
-            className={s.button}
-            onClick={() => dispatch(deleteContact(id))}
-          >
-            <BsFillFileEarmarkExcelFill className={s.button} />
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div className={style.div}>
+      <ul>
+        {visibleContacts.map(({ id, name, phone }) => (
+          <li key={id} className={style.items}>
+            {name}:<span className={style.number}>{phone}</span>
+            <button
+              className={style.button}
+              type="button"
+              onClick={() => onDeleteContact(id)}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
-ContactList.propType = {
-  clickOnBtn: PropTypes.func,
-};
 export default ContactList;

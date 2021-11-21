@@ -1,84 +1,86 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
-import { IoIosPersonAdd } from 'react-icons/io';
-import s from './ContactForm.module.css';
-import { v4 as uuid } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts/actions';
-import { getContactsList } from '../../redux/contacts/contacts-selectors';
+import { getContacts } from '../../Redux/contact-selectors';
+import { addContact } from '../../Redux/contact-slice';
+import style from '../ContactForm/ContactForm.module.css';
 
-const ContactForm = () => {
-  const contactList = useSelector(getContactsList);
-  const dispatch = useDispatch();
-
-  // const nameInputId = uuid();
-  const numberInputId = uuid();
-
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleChangeName = e => {
-    setName(e.target.value);
-  };
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  const handleChangeNumber = e => {
-    setNumber(e.target.value);
-  };
+  const handleChangeName = ({ currentTarget: { name, value } }) => {
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
 
-  const handleSubmit = e => {
-    e.preventDefault();
+      case 'number':
+        setNumber(value);
+        break;
 
-    const newContact = {
-      id: uuid(),
-      name: name,
-      number: number,
-    };
-
-    const renderedNames = contactList.find(
-      ({ name }) => name.toLowerCase() === newContact.name.toLowerCase(),
-    );
-    if (renderedNames) {
-      alert(`${newContact.name} is already on contacts`);
-      setName('');
-      setNumber('');
-      return;
+      default:
+        return;
     }
-    dispatch(addContact(newContact));
+  };
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    if (name === '' && number === '') {
+      return alert(`${name} is already in contacts`);
+    }
+    contacts.some(
+      contact =>
+        contact.name.toLowerCase() === name.toLowerCase() ||
+        contact.phone === number,
+    )
+      ? alert(`${name} is already in contacts.`)
+      : dispatch(addContact({ name, number }));
+    resetForm();
+  };
+
+  const resetForm = () => {
     setName('');
     setNumber('');
   };
 
   return (
-    <form className={s.form} onSubmit={handleSubmit}>
-      <label>
-        <span>Name</span>
+    <form onSubmit={handleSubmit} className={style.form}>
+      <label className={style.label}>
+        Name
         <input
           type="text"
           name="name"
           value={name}
           onChange={handleChangeName}
+          className={style.input}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
           required
         />
       </label>
       <label>
-        <span>Number</span>
+        Number
         <input
           type="tel"
           name="number"
           value={number}
-          id={numberInputId}
-          onChange={handleChangeNumber}
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+          onChange={handleChangeName}
+          className={style.input}
+          pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
+          title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
           required
         />
       </label>
-      <button className={s.button} type="submit">
-        <IoIosPersonAdd size={50} />
-      </button>
+      <div>
+        <button type="submit" className={style.button}>
+          Add contact
+        </button>
+      </div>
     </form>
   );
-};
+}
+
 export default ContactForm;
