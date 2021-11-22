@@ -1,6 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { fetchContacts, addContact, deleteContact } from './contact-slice';
+import {
+  fetchContacts,
+  addContact,
+  deleteContact,
+} from './contact-async-thunk';
 
 export const items = createReducer([], {
   [fetchContacts.fulfilled]: (_, { payload }) => payload,

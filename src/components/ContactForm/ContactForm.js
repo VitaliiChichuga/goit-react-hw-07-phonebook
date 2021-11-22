@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getContacts } from '../../redux/contact-selectors';
-import { addContact } from '../../redux/contact-slice';
+import { addContact } from '../../redux/contact-async-thunk';
 import style from '../ContactForm/ContactForm.module.css';
 
 function ContactForm() {
